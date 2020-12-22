@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from main import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('scraper/api/crawl', views.crawl, name="scraper_crawl_api"),
+    path('scraper/api/getstatus/<int:id>', views.crawlstatus, name="scraper_api_crawl_status"),
+
 ]
