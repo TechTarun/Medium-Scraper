@@ -1,3 +1,4 @@
 main/migrations
 medscraper/logs
 main/__pycache__/*
+scrapefront/node_modules
