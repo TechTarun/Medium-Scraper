@@ -1,2 +1,3 @@
-main\migrations\00*
-main\migrations\__pycache__
+main/migrations
+medscraper/logs
+main/__pycache__/*
