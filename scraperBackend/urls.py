@@ -19,8 +19,8 @@ from main import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('scraper/api/crawl/links', views.crawlLinks, name="scraper_crawl_links"),
-    path('scraper/api/crawl/blogs', views.crawlBlogs, name="scraper_crawl_blogs"),
-    path('scraper/api/crawl/status/<str:task_id>', views.crawlstatus, name="scraper_api_crawl_status"),
+    path('scraper/api/crawl/links', views.crawlLinks.as_view(), name="scraper_crawl_links"),
+    path('scraper/api/crawl/blogs', views.crawlBlogs.as_view(), name="scraper_crawl_blogs"),
+    path('scraper/api/crawl/status', views.crawlstatus.as_view(), name="scraper_api_crawl_status"),
 
 ]

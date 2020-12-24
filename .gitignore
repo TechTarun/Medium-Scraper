@@ -2,3 +2,7 @@ main/migrations
 medscraper/logs
 main/__pycache__/*
 scrapefront/node_modules
+medscraper/medscraper/__pycache__/
+medscraper/medscraper/spiders/__pycache__/
+scraperBackend/__pycache__/
+node_modules/
