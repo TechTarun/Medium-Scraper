@@ -7,3 +7,5 @@ medscraper/medscraper/spiders/__pycache__/
 scraperBackend/__pycache__/
 node_modules/
 medscraper/build/
+deployment_help.txt
+scraperfront/.eslintcache
