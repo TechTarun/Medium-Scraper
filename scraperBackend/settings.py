@@ -55,6 +55,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://medscraper.s3-website.ap-south-1.amazonaws.com",
 ]
 
 CORS_ALLOW_METHODS = [

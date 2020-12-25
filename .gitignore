@@ -6,3 +6,4 @@ medscraper/medscraper/__pycache__/
 medscraper/medscraper/spiders/__pycache__/
 scraperBackend/__pycache__/
 node_modules/
+medscraper/build/

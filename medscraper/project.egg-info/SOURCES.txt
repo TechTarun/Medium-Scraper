@@ -1,0 +1,14 @@
+setup.py
+medscraper/__init__.py
+medscraper/items.py
+medscraper/middlewares.py
+medscraper/pipelines.py
+medscraper/settings.py
+medscraper/spiders/__init__.py
+medscraper/spiders/blogspider.py
+medscraper/spiders/linkspider.py
+project.egg-info/PKG-INFO
+project.egg-info/SOURCES.txt
+project.egg-info/dependency_links.txt
+project.egg-info/entry_points.txt
+project.egg-info/top_level.txt

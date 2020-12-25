@@ -25,137 +25,228 @@ class MediumLogo extends React.Component{
 }
 
 class JobTable extends Component {
-  state = {
-    output: null
+  constructor(props){
+    super(props)
+    this.state = {
+      output: null
+    }
+    this.updateStatus = this.updateStatus.bind(this);
+    this.handleOutput = this.handleOutput.bind(this);
+    this.enableButton = this.enableButton.bind(this);
+  }
+
+  componentDidMount(){
+    this.timerID = setInterval(() => this.updateStatus(), 6000)
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.timerID)
+  }
+
+  updateStatus(){
+    this.setState({
+      output: this.handleOutput(this.props.jobs)
+    })
+  }
+
+  enableButton(){
+    this.props.enableButton()
   }
 
   handleOutput(jobs){
-    // alert(jobs);
-    const data= {
+    const data = {
       "job_id" : jobs
     }
-    axios.post('http://c6a129fe81d8.ngrok.io/scraper/api/crawl/status', data).then(
+    axios.post('http://32b648e19b2a.ngrok.io/scraper/api/crawl/status', data).then(
       res => {
-        console.log(res.data.message);
         this.setState({
           output: res.data.message
         })
+
         var num_of_unfinished_jobs = 0;
         this.state.output.map((item) => {
           if(item === "running" || item === "pending"){
             num_of_unfinished_jobs += 1
           }
+          return null;
         })
-        console.log("Number of unfinished jobs = ", num_of_unfinished_jobs)
         if(num_of_unfinished_jobs === 0){
-          clearInterval(this.timer);
+          clearInterval(this.timerID)
+          this.enableButton()
         }
       }
     )
   }
 
-  componentDidMount(){
-    this.timer = setInterval(() => this.updateStatus(), 2000)
-  }
-
-  componentWillUnmount(){
-    clearInterval(this.timer)
-  }
-
-  updateStatus(){
-    // console.log("Updating output")
-    if(this.props.jobs !== null){
-      this.setState({
-        output: this.handleOutput(this.props.jobs)
-      })
-    }
-    console.log(this.state.output)
-  }
-
   render(){
-    if(this.props.jobs === null || this.state.output === null || this.state.output === undefined){
+    var index = 0;
+    if(this.state.output === null || this.state.output === undefined){
       return(
+        <tbody></tbody>
+      )
+    }
+
+    else{
+      this.rows = this.state.output.map((item) => {
+        if(item === "running" || item === "pending"){
+          index += 1
+          this.row = 
+            <tbody>
+                <tr key={index}>
+                  <th scope="row">{index}</th>
+                  <td>{item}</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+            </tbody>
+        }
+        else{
+          index += 1
+          this.row = 
+          <tbody>
+            <tr key={index}>
+              <th scope="row">{index}</th>
+              <td>{item[0]}</td>
+              <td>{item[1]}</td>
+              <td>{item[2]}</td>
+            </tr>
+          </tbody>
+        }
+        return this.row;
+      })
+      return (
+        this.rows.map((item) => item)
+      )
+    }
+  }
+}
+
+class Loader extends Component {
+  render(){
+    if(this.props.status.length === 0){
+      return (
         <div></div>
       )
     }
     else{
       return(
+        <div className="container"><CircularProgress /></div>
+      )
+    }
+  }
+}
+
+class ShowTable extends Component {
+  render(){
+    const jobs = this.props.jobs
+    if(jobs === null){
+      return null
+    }
+    else{
+      return (
         <div>
-          <table>
+          <table className="table">
             <thead>
               <tr>
-                <th>S. No.</th>
-                <th>Blog Title</th>
-                {/* <th>Blog Author</th>
-                <th>Blog Responses</th> */}
+                <th scope="col">S. No.</th>
+                <th scope="col">Blog Title</th>
+                <th scope="col">Blog Author</th>
+                <th scope="col">Blog Responses</th>
               </tr>
             </thead>
-            <tbody>
-              {this.state.output.map((item) => 
-                  <tr key={this.state.output.indexOf(item)}>
-                    <td>{this.state.output.indexOf(item)+1}</td>
-                    <td>{item}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>)}
-            </tbody>
+            <JobTable jobs={jobs} enableButton={this.props.enableButton}/>
           </table>
-          </div>
+        </div>
       )
     }
   }
 }
 
 class CrawlButton extends Component{
-  state = {
-    message: null,
-    unique_id: null,
-    status: "",
-    jobs: null
+  constructor(props){
+    super(props);
+    this.state = {
+      message: null,
+      unique_id: null,
+      status: "",
+      jobs: null,
+      isButtonEnabled: false
+    }
+    this.handleClick = this.handleClick.bind(this);
+    this.enableButton = this.enableButton.bind(this);
+  }
+
+  enableButton(){
+    this.setState({
+      isButtonEnabled: false
+    })
+  }
+
+  handleClick(){
+    if(this.props.tag.length === 0){
+      alert("Please enter some tag to crawl")
+    }
+    else{
+      this.setState({
+        isButtonEnabled: true,
+        status: "Initalizing crawls....",
+        jobs: null
+      })
+      let data = {
+        tag: this.props.tag
+      }
+      axios.post('http://32b648e19b2a.ngrok.io/scraper/api/crawl/links', data).then(
+        res => {
+          this.setState({
+            status: "",
+            unique_id: res.data.unique_id,
+          })
+
+          let data = {
+            unique_id: this.state.unique_id
+          }
+          axios.post('http://32b648e19b2a.ngrok.io/scraper/api/crawl/blogs', data).then(
+            res => {
+            this.setState({
+              jobs: res.data.jobs,
+              isDone: false
+            })
+          }
+          )
+        }
+      )
+    }
+    // this.resetInput()
   }
 
   render(){
     return(
       <div className="container">
-        <button type="button" className="crawlbutton btn btn-outline-success" onClick={() => {
-          this.setState({
-            status: "Initializing crawl...."
-          })
-          let data = {
-            tag: this.props.tag
-          }
-          // alert(this.props.tag)
-          axios.post('http://c6a129fe81d8.ngrok.io/scraper/api/crawl/links', data).then(
-            res => {
-              console.log(res);
-              this.setState({
-                status: "",
-                unique_id: res.data.unique_id,
-              })
+        <button type="button" className="crawlbutton btn btn-outline-dark" onClick={this.handleClick} disabled={this.state.isButtonEnabled}>Crawl!!</button><br></br>
+        {/* <div className="progressloader"><CircularProgress /></div> */}
+        <div className="progressloader"><Loader status={this.state.status}/></div>
 
-              let data = {
-                unique_id: this.state.unique_id
-              }
-              axios.post('http://c6a129fe81d8.ngrok.io/scraper/api/crawl/blogs', data).then(
-                res => this.setState({
-                  jobs: res.data.jobs
-                })
-              )
-            }
-          )
-        }}>Crawl!!</button><br></br>
-        <div className="row">
-          <div className="col-lg-5"></div>
-        <span className="col-lg-3">{this.state.status}</span></div><br></br>
-        <JobTable jobs={this.state.jobs}/>
+        <br></br>
+        <ShowTable jobs={this.state.jobs} enableButton={this.enableButton}/>
       </div>
     )
   }
 }
+
 class TagInput extends Component{
-  state = {
-    tag: ""
+  constructor(props){
+    super(props)
+    this.state = {
+      tag: ""
+    }
+    // this.resetInput = this.resetInput.bind(this);
   }
+
+  // resetInput(){
+  //   this.setState({
+  //     tag: ""
+  //   })
+  // }
 
   render(){
     return(
@@ -164,17 +255,18 @@ class TagInput extends Component{
           <div className="input-group-prepend">
             <span className="input-group-text" id="basic-addon1"><SearchIcon></SearchIcon></span>
           </div>
-          <input type="text" className="form-control" placeholder="Enter tag or topic to search blogs!" aria-label="Username" aria-describedby="basic-addon1" onChange={(event) => {
+          <input type="text" className="form-control" placeholder="Enter tag or topic to search blogs!" value={this.state.tag} aria-label="Username" aria-describedby="basic-addon1" onChange={(event) => {
                 this.setState({
                   tag: event.target.value
                 })
           }}></input>
         </div>
-        <CrawlButton tag={this.state.tag}/>
+        <CrawlButton tag={this.state.tag} resetInput={this.resetInput}/>
       </div>
     )
   }
 }
+
 class App extends Component {
   render() {
     return (

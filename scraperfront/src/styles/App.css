@@ -5,8 +5,14 @@
 
 .taginput {
   width: 35%;
+  /* margin-left: 50%; */
 }
 
 .crawlbutton {
-  margin-left: 500px;
+  margin-left: 45%;
+}
+
+.progressloader{
+  margin-left: 47%;
+  margin-top: 10px;
 }

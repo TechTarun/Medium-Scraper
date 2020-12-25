@@ -74,12 +74,13 @@ class crawlBlogs(APIView):
 class crawlstatus(APIView):
     def post(self, request):
         task_id = request.data.get("job_id")
+        print(task_id)
         output_status = list()
         for job_id in task_id:
             status = scrapyd.job_status('default', job_id)
             if status == "finished":
                 blog = Blog.objects.get(unique_id=job_id)
-                output_status.append(blog.title)
+                output_status.append([blog.title, blog.author, blog.num_of_responses])
             else:
                 output_status.append(status)
         return Response({
