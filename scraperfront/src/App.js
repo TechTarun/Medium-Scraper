@@ -106,7 +106,7 @@ class JobTable extends Component {
           <tbody>
             <tr key={index}>
               <th scope="row">{index}</th>
-              <td><a href={item[3]}>{item[0]}</a></td>
+              <td><a href={item[3]} target="blank">{item[0]}</a></td>
               <td>{item[1]}</td>
               <td>{item[2]}</td>
             </tr>
