@@ -57,7 +57,7 @@ class JobTable extends Component {
     const data = {
       "job_id" : jobs
     }
-    axios.post('http://13.127.85.66/scraper/api/crawl/status', data).then(
+    axios.post('http://c71ffd42e549.ngrok.io/scraper/api/crawl/status', data).then(
       res => {
         this.setState({
           output: res.data.message
@@ -195,7 +195,7 @@ class CrawlButton extends Component{
       let data = {
         tag: this.props.tag
       }
-      axios.post('http://13.127.85.66/scraper/api/crawl/links', data).then(
+      axios.post('http://c71ffd42e549.ngrok.io/scraper/api/crawl/links', data).then(
         res => {
           this.setState({
             status: "",
@@ -205,7 +205,7 @@ class CrawlButton extends Component{
           let data = {
             unique_id: this.state.unique_id
           }
-          axios.post('http://13.127.85.66/scraper/api/crawl/blogs', data).then(
+          axios.post('http://c71ffd42e549.ngrok.io/scraper/api/crawl/blogs', data).then(
             res => {
             this.setState({
               jobs: res.data.jobs,
@@ -216,7 +216,6 @@ class CrawlButton extends Component{
         }
       )
     }
-    // this.resetInput()
   }
 
   render(){
@@ -239,14 +238,7 @@ class TagInput extends Component{
     this.state = {
       tag: ""
     }
-    // this.resetInput = this.resetInput.bind(this);
   }
-
-  // resetInput(){
-  //   this.setState({
-  //     tag: ""
-  //   })
-  // }
 
   render(){
     return(
