@@ -57,7 +57,7 @@ class JobTable extends Component {
     const data = {
       "job_id" : jobs
     }
-    axios.post('http://13.127.85.66/scraper/api/crawl/status', data).then(
+    axios.post('http://4615acc432bc.ngrok.io/scraper/api/crawl/status', data).then(
       res => {
         this.setState({
           output: res.data.message
@@ -106,7 +106,7 @@ class JobTable extends Component {
           <tbody>
             <tr key={index}>
               <th scope="row">{index}</th>
-              <td>{item[0]}</td>
+              <td><a href={item[3]}>{item[0]}</a></td>
               <td>{item[1]}</td>
               <td>{item[2]}</td>
             </tr>
@@ -195,7 +195,7 @@ class CrawlButton extends Component{
       let data = {
         tag: this.props.tag
       }
-      axios.post('http://13.127.85.66/scraper/api/crawl/links', data).then(
+      axios.post('http://4615acc432bc.ngrok.io/scraper/api/crawl/links', data).then(
         res => {
           this.setState({
             status: "",
@@ -205,7 +205,7 @@ class CrawlButton extends Component{
           let data = {
             unique_id: this.state.unique_id
           }
-          axios.post('http://13.127.85.66/scraper/api/crawl/blogs', data).then(
+          axios.post('http://4615acc432bc.ngrok.io/scraper/api/crawl/blogs', data).then(
             res => {
             this.setState({
               jobs: res.data.jobs,
