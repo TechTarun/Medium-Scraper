@@ -197,6 +197,7 @@ class CrawlButton extends Component{
       }
       axios.post('http://13.127.85.66/scraper/api/crawl/links', data).then(
         res => {
+          console.log(res)
           this.setState({
             status: "",
             unique_id: res.data.unique_id,
@@ -207,6 +208,7 @@ class CrawlButton extends Component{
           }
           axios.post('http://13.127.85.66/scraper/api/crawl/blogs', data).then(
             res => {
+            console.log(res)
             this.setState({
               jobs: res.data.jobs,
               isDone: false

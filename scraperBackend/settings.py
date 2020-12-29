@@ -25,7 +25,7 @@ SECRET_KEY = 'xl$@f$5i66z494zsc(u3ndm9nab870%8mff!^8s=23#8yq9tt7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["http://localhost:3000", "*"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -53,10 +53,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://medscraper.s3-website.ap-south-1.amazonaws.com",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://medscraper.s3-website.ap-south-1.amazonaws.com",
+# ]
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_METHODS = [
     'GET',
